@@ -70,6 +70,8 @@ class CVToolBar(QWidget):
             command = Command.DenoisingCommand()
         elif selected_func_name == "BGR2RGB":
             command = Command.RGB2BGRCommand()
+        elif selected_func_name == "Thresholding":
+            command = Command.ThresholCommand(125)
         else:
             return
 

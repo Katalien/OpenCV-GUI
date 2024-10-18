@@ -15,3 +15,9 @@ class DenoisingCommand(ICommand.ICommand):
 class RGB2BGRCommand(ICommand.ICommand):
     def execute(self, image):
         return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+class ThresholCommand(ICommand.ICommand):
+    def __init__(self, threshold_value):
+        self.threshold_value = threshold_value
+    def execute(self, image):
+        return cv2.threshold(image, self.threshold_value, 255, cv2.THRESH_BINARY )[1]

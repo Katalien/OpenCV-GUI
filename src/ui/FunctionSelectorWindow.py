@@ -11,7 +11,7 @@ class FunctionSelectorWidget(QDialog):
 
         self.layout = QVBoxLayout()
         self.selector_window = QListWidget()
-        self.selector_window.addItems(["GaussBlur", "Denoising", "BGR2RGB"])
+        self.selector_window.addItems(["GaussBlur", "Denoising", "BGR2RGB", "Thresholding"])
         self.selector_window.currentTextChanged.connect(self.text_changed)
 
         ok_button = QPushButton("Ok")
