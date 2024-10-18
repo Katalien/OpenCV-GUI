@@ -44,7 +44,6 @@ class ImageViewer(QWidget):
         self.selected_image_signal.emit(self.image)
 
     def update_image(self, new_image):
-        print("update image in ImageViewer")
         new_image = cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB)
         qimage = QImage(new_image.data, new_image.shape[1], new_image.shape[0], new_image.strides[0],
                         QImage.Format_RGB888)
