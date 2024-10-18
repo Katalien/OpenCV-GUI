@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, int(self.screen_width), int(self.screen_height))
         layout = QHBoxLayout()
         self.image_viewer = ImageViewer(max_width=self.screen_width // 2, max_height=self.screen_height)  # Изменили на self.widget_l, чтобы можно было обновить его позже
-        self.settings_viewer = CVToolBar()
+        self.settings_viewer = CVToolBar(self.image_viewer)
         layout.addWidget(self.image_viewer)
         layout.addWidget(self.settings_viewer)
 
