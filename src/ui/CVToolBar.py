@@ -8,6 +8,7 @@ from ui.FuncListWidget import FuncListWidget
 class CVToolBar(QWidget):
     def __init__(self, image_viewer):
         super().__init__()
+        self.params = {"kernel_size_x": 25, "kernel_size_y": 25, "sigma_x": 0, "sigma_y": 0}
         self.image_viewer = image_viewer
         self.image_viewer.selected_image_signal.connect(self.__image_selected)
         self.invoker = ImageProcessorInvoker(self.image_viewer.image)
@@ -30,6 +31,12 @@ class CVToolBar(QWidget):
         self.layout.addWidget(self.func_list_widget)
 
         self.setLayout(self.layout)
+
+    def __update_params(self, param):
+        self.params.update(param)
+        print(f"CV2 tools {self.params}")
+        processed_image = self.invoker.execute_all(**self.params)
+        self.image_viewer.update_image(processed_image)
 
     def __get_original_image(self):
         if self.invoker.original_image is None:
@@ -65,20 +72,25 @@ class CVToolBar(QWidget):
 
     def function_selected(self, selected_func_name):
         if selected_func_name == "GaussBlur":
-            command = Command.GaussianBlurCommand(kernel_size=5)
+            command = Command.GaussianBlurCommand()
         elif selected_func_name == "Denoising":
             command = Command.DenoisingCommand()
         elif selected_func_name == "BGR2RGB":
             command = Command.RGB2BGRCommand()
         elif selected_func_name == "Thresholding":
-            command = Command.ThresholCommand(125)
+            command = Command.ThresholCommand()
         else:
             return
 
-        self.invoker.add_command(command)
+
         self.func_list_widget.add_item(selected_func_name)
+        for func_item in self.func_list_widget.get_items():
+            print("cv tool bar", func_item.function_name)
+            func_item.func_params_signal.connect(self.__update_params)
+            print(self.params)
+        self.invoker.add_command(command)
         if self.invoker.original_image is not None:
-            processed_image = self.invoker.execute_all()
+            processed_image = self.invoker.execute_all(**self.params)
             self.image_viewer.update_image(processed_image)
         else:
             print("No image")

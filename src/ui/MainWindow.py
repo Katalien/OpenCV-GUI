@@ -43,5 +43,3 @@ class MainWindow(QMainWindow):
 
         if file_path:
             self.image_viewer.load_image(file_path)
-
-

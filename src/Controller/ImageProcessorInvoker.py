@@ -15,8 +15,8 @@ class ImageProcessorInvoker:
     def add_command(self, command):
         self.commands.append(command)
 
-    def execute_all(self):
+    def execute_all(self, **params):
         self.processed_image = self.original_image.copy()
         for command in self.commands:
-            self.processed_image = command.execute(self.processed_image)
+            self.processed_image = command.execute(self.processed_image, **params)
         return self.processed_image
