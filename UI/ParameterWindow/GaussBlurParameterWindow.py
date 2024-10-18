@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from ui.ParameterWindow import IParameterWindow
+from UI.ParameterWindow import IParameterWindow
 
 
 class GaussBlurParameterWindow(IParameterWindow.IParameterWindow):

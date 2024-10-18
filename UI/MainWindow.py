@@ -1,8 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from ui.ImageViewer import ImageViewer
-from ui.CVToolBar import CVToolBar
+from UI.ImageViewer import ImageViewer
+from UI.CVToolBar import CVToolBar
 
 
 class MainWindow(QMainWindow):

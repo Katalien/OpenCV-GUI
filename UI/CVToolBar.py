@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import *
-from ui.FunctionSelectorWindow import FunctionSelectorWidget
-from ui.FunctionItem import FunctionItem
-from Controller.ImageProcessorInvoker import ImageProcessorInvoker
-from Controller import Command
-from ui.FuncListWidget import FuncListWidget
+from UI.FunctionSelectorWindow import FunctionSelectorWidget
+from Controller.Commands.ImageProcessorInvoker import ImageProcessorInvoker
+from Controller.Commands import GaussianBlurCommand, DenoisingCommand, ThresholCommand, RGB2BGRCommand
+from UI.FuncListWidget import FuncListWidget
 
 class CVToolBar(QWidget):
     def __init__(self, image_viewer):
@@ -72,13 +71,13 @@ class CVToolBar(QWidget):
 
     def function_selected(self, selected_func_name):
         if selected_func_name == "GaussBlur":
-            command = Command.GaussianBlurCommand()
+            command = GaussianBlurCommand.GaussianBlurCommand()
         elif selected_func_name == "Denoising":
-            command = Command.DenoisingCommand()
+            command = DenoisingCommand.DenoisingCommand()
         elif selected_func_name == "BGR2RGB":
-            command = Command.RGB2BGRCommand()
+            command = RGB2BGRCommand.RGB2BGRCommand()
         elif selected_func_name == "Thresholding":
-            command = Command.ThresholCommand()
+            command = ThresholCommand.ThresholCommand()
         else:
             return
 

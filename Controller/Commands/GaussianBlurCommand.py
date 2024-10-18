@@ -1,4 +1,4 @@
-from Controller import ICommand
+from Controller.Commands import ICommand
 import cv2
 
 class GaussianBlurCommand(ICommand.ICommand):
@@ -16,16 +16,3 @@ class GaussianBlurCommand(ICommand.ICommand):
                                 (self.kernel_size_x, self.kernel_size_y),
                                 sigmaX=self.sigma_x,
                                 sigmaY=self.sigma_y)
-
-class DenoisingCommand(ICommand.ICommand):
-    def execute(self, image, **params):
-        return cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
-
-class RGB2BGRCommand(ICommand.ICommand):
-    def execute(self, image, **params):
-        return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-class ThresholCommand(ICommand.ICommand):
-
-    def execute(self, image, **params):
-        return cv2.threshold(image, self.threshold_value, 255, cv2.THRESH_BINARY )[1]

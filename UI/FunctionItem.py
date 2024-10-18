@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from ui.ParameterWindow import *
+from UI.ParameterWindow import *
 
 class FunctionItem(QWidget):
     func_params_signal = pyqtSignal(dict)

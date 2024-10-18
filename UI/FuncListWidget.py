@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-from ui.FunctionItem import FunctionItem
+from UI.FunctionItem import FunctionItem
 
 class FuncListWidget(QWidget):
     def __init__(self):
