@@ -5,7 +5,7 @@ from UI.ParameterWindow import IParameterWindow
 
 
 class GaussBlurParameterWindow(IParameterWindow.IParameterWindow):
-    param_kernel_size_signal = pyqtSignal(dict)
+    param_signal = pyqtSignal(dict)
 
     def __init__(self):
         super().__init__()
@@ -16,10 +16,7 @@ class GaussBlurParameterWindow(IParameterWindow.IParameterWindow):
         self.sigma_value_x = 0
         self.sigma_value_y = 0
 
-        self.params_dict = {"kernel_size_x": self.kernel_size_value_x,
-                            "kernel_size_y": self.kernel_size_value_y,
-                            "sigma_x": self.sigma_value_x,
-                            "sigma_y": self.sigma_value_y}
+        self.params_dict = self.__set_params()
 
         # Создаем элементы для X и Y
         self.param_name_label_x, self.kernel_size_slider_x = self.__create_slider("X", self.kernel_size_value_x)
@@ -36,6 +33,15 @@ class GaussBlurParameterWindow(IParameterWindow.IParameterWindow):
         self.layout.addWidget(self.sigma_slider_x)
         self.layout.addWidget(self.param_name_label_sigma_y)
         self.layout.addWidget(self.sigma_slider_y)
+
+    def __set_params(self):
+        dict = {"kernel_size_x": self.kernel_size_value_x,
+         "kernel_size_y": self.kernel_size_value_y,
+         "sigma_x": self.sigma_value_x,
+         "sigma_y": self.sigma_value_y}
+        self.param_signal.emit(dict)
+        return dict
+
 
     def __create_slider(self, axis_name, initial_value):
         """
@@ -76,9 +82,7 @@ class GaussBlurParameterWindow(IParameterWindow.IParameterWindow):
             self.params_dict["sigma_y"] = self.sigma_value_y
             self.param_name_label_sigma_y.setText(f"SigmaY = {self.sigma_value_y}")
 
-        print(f"Param window {axis} = {new_val}")
-
-        self.param_kernel_size_signal.emit(self.params_dict)
+        self.param_signal.emit(self.params_dict)
 
     def get_parameters(self):
         """

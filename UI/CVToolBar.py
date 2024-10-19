@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import *
 from UI.FunctionSelectorWindow import FunctionSelectorWidget
 from Controller.Commands.ImageProcessorInvoker import ImageProcessorInvoker
-from Controller.Commands import GaussianBlurCommand, DenoisingCommand, ThresholCommand, RGB2BGRCommand
+from Controller.Commands import GaussianBlurCommand, DenoisingCommand, ThresholCommand, RGB2BGRCommand, RGB2GrayCommand
 from UI.FuncListWidget import FuncListWidget
+from UI.WarninfWidget import WarningWidget
 
 class CVToolBar(QWidget):
     def __init__(self, image_viewer):
@@ -34,8 +35,12 @@ class CVToolBar(QWidget):
     def __update_params(self, param):
         self.params.update(param)
         print(f"CV2 tools {self.params}")
-        processed_image = self.invoker.execute_all(**self.params)
-        self.image_viewer.update_image(processed_image)
+        try:
+            processed_image = self.invoker.execute_all(**self.params)
+            self.image_viewer.update_image(processed_image)
+        except Exception as e:
+            WarningWidget(e)
+
 
     def __get_original_image(self):
         if self.invoker.original_image is None:
@@ -44,12 +49,7 @@ class CVToolBar(QWidget):
         self.image_viewer.update_image(self.invoker.original_image)
 
     def __no_image_warning(self):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setWindowTitle("Warning")
-        msg_box.setText("Load image before adding fuctions")
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.exec()
+        WarningWidget("Load image before adding function")
 
     def __add_button_clicked(self):
         if self.invoker.original_image is None:
@@ -78,15 +78,15 @@ class CVToolBar(QWidget):
             command = RGB2BGRCommand.RGB2BGRCommand()
         elif selected_func_name == "Thresholding":
             command = ThresholCommand.ThresholCommand()
+        elif selected_func_name == "RGB2GRAY":
+            command = RGB2GrayCommand.RGB2GrayCommand()
         else:
             return
 
 
         self.func_list_widget.add_item(selected_func_name)
         for func_item in self.func_list_widget.get_items():
-            print("cv tool bar", func_item.function_name)
             func_item.func_params_signal.connect(self.__update_params)
-            print(self.params)
         self.invoker.add_command(command)
         if self.invoker.original_image is not None:
             processed_image = self.invoker.execute_all(**self.params)

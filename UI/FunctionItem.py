@@ -20,16 +20,17 @@ class FunctionItem(QWidget):
         self.func_item.clicked.connect(self.__process_btn_click)
         self.layout.addWidget(self.func_item)
         self.param_dropdown_widget = self.__set_param_drop_down_widget()
-        self.layout.addWidget(self.param_dropdown_widget)
+        if self.param_dropdown_widget is not None:
+            self.layout.addWidget(self.param_dropdown_widget)
         self.setLayout(self.layout)
 
     def __process_btn_click(self):
-        print("Button clicked", self.function_name)
-        if self.param_dropdown_widget.isVisible():
-            self.param_dropdown_widget.setVisible(False)
-        else:
-            self.param_dropdown_widget.setVisible(True)
-            self.param_dropdown_widget.param_kernel_size_signal.connect(self.__get_params)
+        if self.param_dropdown_widget is not None:
+            if self.param_dropdown_widget.isVisible():
+                self.param_dropdown_widget.setVisible(False)
+            else:
+                self.param_dropdown_widget.setVisible(True)
+                self.param_dropdown_widget.param_signal.connect(self.__get_params)
 
     def __get_params(self, params):
         self.func_params_signal.emit(params)
@@ -38,3 +39,7 @@ class FunctionItem(QWidget):
     def __set_param_drop_down_widget(self):
         if self.function_name == "GaussBlur":
             return GaussBlurParameterWindow()
+        elif self.function_name == "Thresholding":
+            return ThresholdParameterWindow()
+        elif self.function_name == "RGB2BGR":
+            return None

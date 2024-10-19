@@ -18,5 +18,8 @@ class ImageProcessorInvoker:
     def execute_all(self, **params):
         self.processed_image = self.original_image.copy()
         for command in self.commands:
-            self.processed_image = command.execute(self.processed_image, **params)
+            try:
+                self.processed_image = command.execute(self.processed_image, **params)
+            except Exception as e:
+                raise ValueError(e)
         return self.processed_image
